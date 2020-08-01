@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Output of r_quiz.py
+/r_quiz.txt
