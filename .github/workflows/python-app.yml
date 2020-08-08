@@ -34,3 +34,11 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    - name: Package Application
+      uses: JackMcKew/pyinstaller-action-linux@main
+      with:
+        path: /
+    - uses: actions/upload-artifact@v2
+      with:
+        name: volksschule
+        path: dist/*.exe
