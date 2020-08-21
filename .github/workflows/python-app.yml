@@ -34,12 +34,12 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-    - name: Package Application
-      uses: JackMcKew/pyinstaller-action-linux@main
+    - name: PyInstaller Windows
+      uses: JackMcKew/pyinstaller-action-windows@v0.1.2
       with:
         path: .
-        spec: zahlenmauer.spec
+        spec: r_quiz.spec
     - uses: actions/upload-artifact@v2
       with:
         name: volksschule
-        path: dist/linux
+        path: dist/windows
