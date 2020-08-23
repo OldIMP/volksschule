@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.2
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
@@ -34,12 +34,25 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+
+  package:
+
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    strategy:
+      matrix:
+        artifact: [r_quiz, zahlenmauer]
+
+    steps:
+    - uses: actions/checkout@v2.3.2
     - name: PyInstaller Windows
       uses: JackMcKew/pyinstaller-action-windows@v0.1.2
       with:
         path: .
-        spec: r_quiz.spec
+        spec: ${{ matrix.artifact }}.spec
     - uses: actions/upload-artifact@v2
       with:
-        name: volksschule
+        name: ${{ matrix.artifact }}
         path: dist/windows
