@@ -27,7 +27,7 @@ sum
 
 """
 
-from itertools import permutations, tee
+from itertools import chain, permutations, tee
 
 
 def sum_pair(iterable):
@@ -48,11 +48,26 @@ def sum_up(row):
     return next_row[0]
 
 
+def parse_range(args):
+    """
+    Parse a range based on args.stop & args.symmetric, e.g.
+    * args.stop=2, args.symmetric=False -> [1, 2]
+    * args.stop=2, args.symmetric=True -> [1, 2, 1]
+    """
+
+    a_range = range(1, args.stop + 1)
+
+    if args.symmetric:
+        a_range = chain(a_range, range(args.stop - 1, 0, -1))
+
+    return a_range
+
+
 if __name__ == "__main__":
     import argparse
     import pandas as pd
 
-    def parse_bottom_stop():
+    def parse_bottom():
         "Parse CLI arg as bottom stop"
         parser = argparse.ArgumentParser()
         parser.add_argument(
@@ -62,13 +77,21 @@ if __name__ == "__main__":
             default=5,
             type=int,
         )
+        parser.add_argument(
+            "--symmetric",
+            help="set to make the bottom symmetric e.g."
+            " '-S 2 --symmetric' will produce [1, 2, 1]",
+            nargs="?",
+            const=True,
+            type=bool,
+        )
         args = parser.parse_args()
         if args.stop < 2:
             parser.error("stop must >= 2")
-        return args.stop + 1
+        return parse_range(args)
 
     BOTTOM_SUM = pd.DataFrame(columns=["bottom", "sum"])
-    ALL_BOTTOMS = permutations(range(1, parse_bottom_stop()))
+    ALL_BOTTOMS = permutations(parse_bottom())
 
     for index, bottom in enumerate(ALL_BOTTOMS):
         print(bottom, end="->")
