@@ -81,9 +81,7 @@ if __name__ == "__main__":
             "--symmetric",
             help="set to make the bottom symmetric e.g."
             " '-S 2 --symmetric' will produce [1, 2, 1]",
-            nargs="?",
-            const=True,
-            type=bool,
+            action="store_true",
         )
         args = parser.parse_args()
         if args.stop < 2:
