@@ -4,11 +4,11 @@ Randomly generates a mix of math quizzes for the elementary school:
 - +/- quizzes between 1-100
 - Einmaleins: Multiply/division quizzes w/ product/divident up to 10
 
-Output will be written to a txt file defined by --path to simplify printing
+Output will be written to a pdf file defined by --path
 """
 
-import os
 import random
+import numpy as np
 
 
 def random_bool():
@@ -78,11 +78,15 @@ class MinusQuiz:
         return f"{self.subtrahend}-{self.minuend}"
 
 
-def print_group(ratio_plus_minus, target_file, count, col):
-    """Print a group of R Quiz to target_file"""
+def produce_matrix(ratio_plus_minus):
+    "Produce a 2d matrix of quizzes"
+
+    col = 12
+    row = 38
+
     quizzes = set()
 
-    while len(quizzes) <= count:
+    while len(quizzes) < row * col:
         if random.random() > ratio_plus_minus:
             quizzes.add(MulDivQuiz())
         else:
@@ -91,14 +95,13 @@ def print_group(ratio_plus_minus, target_file, count, col):
             else:
                 quizzes.add(MinusQuiz())
 
-    for _ in range(count // col):
-        for _ in range(col):
-            print(quizzes.pop(), end="=\t", file=target_file)
-        print(file=target_file)
+    return np.char.array([f"{q}=" for q in quizzes]).reshape(row, col).tolist()
 
 
 if __name__ == "__main__":
     import argparse
+    import os
+    from reportlab.platypus import SimpleDocTemplate, Table
 
     PARSER = argparse.ArgumentParser()
 
@@ -112,32 +115,10 @@ if __name__ == "__main__":
         "-P",
         "--path",
         help="where the output will be saved, existing file will be overwritten "
-        "(default=r_quiz.txt in the working directory)",
-        default="r_quiz.txt",
+        "(default=r_quiz.pdf in the working directory)",
+        default="r_quiz.pdf",
     )
-
-    GROUP = PARSER.add_argument_group("Formatting")
-    GROUP.add_argument(
-        "-g",
-        "--groups",
-        help="No. of groups to be printed (default=6)",
-        default=6,
-        type=int,
-    )
-    GROUP.add_argument(
-        "--count-per-group",
-        help="No. of quizzes per group (default=30)",
-        default=30,
-        type=int,
-    )
-    GROUP.add_argument(
-        "-c", "--columns", help="No. of columns (default=6)", default=6, type=int
-    )
-
     ARGS = PARSER.parse_args()
 
-    with open(ARGS.path, "w", encoding="utf-8") as file:
-        for _ in range(ARGS.groups):
-            print_group(ARGS.ratio_plus_minus, file, ARGS.count_per_group, ARGS.columns)
-            print(file=file)
-    print(f"written to {os.path.abspath(ARGS.path)}")
+    SimpleDocTemplate(ARGS.path).build([Table(produce_matrix(ARGS.ratio_plus_minus))])
+    print(f"Written to {os.path.abspath(ARGS.path)}")

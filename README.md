@@ -8,4 +8,4 @@ Caculates all possible [Zahlenmauer](https://de.wikipedia.org/wiki/Zahlenmauer) 
 And yes, I know it's all just binomial coefficients, but hey I'm a programmer not a mathmatician ;)
 
 ## Rechen-Quiz (`r-quiz.py`)
-Randomly generates a mix of math quizzes for the elementary school, formatted for easy printing
+Randomly generates a mix of math quizzes for the elementary school

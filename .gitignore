@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # Output of r_quiz.py
-/r_quiz.txt
+/r_quiz.pdf

@@ -1,6 +1,6 @@
 pyinstaller==3.6
 pytest-cov==2.10.1
-
+reportlab==3.5.26
 pandas==1.1
 
 # higher version will cause deprecated warning
