@@ -8,6 +8,7 @@ Output will be written to a pdf file defined by --path
 """
 
 import random
+from dataclasses import dataclass
 import numpy as np
 
 
@@ -34,17 +35,12 @@ class NoOrderQuiz:
         return hash(tuple(sorted((self.left, self.right))))
 
 
-class MulDivQuiz(NoOrderQuiz):
-    # pylint: disable=too-few-public-methods
-    """A mul/div quiz"""
+@dataclass(frozen=True)
+class OrderQuiz:
+    """Base class for quiz where order matters"""
 
-    def __init__(self):
-        super().__init__(2, 10)
-
-    def __str__(self):
-        if random_bool():
-            return f"{self.left}⋅{self.right}"
-        return f"{self.left*self.right}:{self.left}"
+    left: int
+    right: int
 
 
 class PlusQuiz(NoOrderQuiz):
@@ -58,24 +54,61 @@ class PlusQuiz(NoOrderQuiz):
         return f"{self.left}+{self.right}"
 
 
-class MinusQuiz:
-    """A minus quiz"""
+class MinusQuiz(OrderQuiz):
+    # pylint: disable=too-few-public-methods
+    """A - quiz"""
 
     def __init__(self):
-        self.subtrahend = random.randrange(2, 100)
-        self.minuend = random.randrange(1, self.subtrahend)
-
-    def __eq__(self, other):
-        if isinstance(other, MinusQuiz):
-            if self.subtrahend == other.subtrahend:
-                return self.minuend == other.minuend
-        return NotImplemented
-
-    def __hash__(self):
-        return hash((self.subtrahend, self.minuend))
+        minuend = random.randrange(2, 100)
+        super().__init__(minuend, random.randrange(1, minuend))
 
     def __str__(self):
-        return f"{self.subtrahend}-{self.minuend}"
+        return f"{self.left}-{self.right}"
+
+
+class MulQuiz(NoOrderQuiz):
+    # pylint: disable=too-few-public-methods
+    """A multiply quiz"""
+
+    def __init__(self):
+        super().__init__(2, 10)
+
+    def __str__(self):
+        return f"{self.left}⋅{self.right}"
+
+
+class DivQuiz(OrderQuiz):
+    # pylint: disable=too-few-public-methods
+    """A division quiz"""
+
+    def __init__(self):
+        super().__init__(random.randrange(2, 9), random.randrange(2, 9))
+
+    def __str__(self):
+        return f"{self.left*self.right}:{self.left}"
+
+
+def produce_quizzes(count, ratio_plus_minus):
+    """Produce a set of quizzes w/ max size of count
+    or smaller if ratio_plus_minus is reached earlier"""
+
+    quizzes = set()
+    count_plus_minus = 0
+
+    while len(quizzes) < count and count_plus_minus < count * ratio_plus_minus:
+        if random.random() > ratio_plus_minus:
+            if random_bool():
+                quizzes.add(MulQuiz())
+            else:
+                quizzes.add(DivQuiz())
+        else:
+            if random_bool():
+                quizzes.add(PlusQuiz())
+            else:
+                quizzes.add(MinusQuiz())
+            count_plus_minus += 1
+
+    return quizzes
 
 
 def produce_matrix(ratio_plus_minus):
@@ -83,17 +116,11 @@ def produce_matrix(ratio_plus_minus):
 
     col = 12
     row = 38
+    count = row * col
 
-    quizzes = set()
-
-    while len(quizzes) < row * col:
-        if random.random() > ratio_plus_minus:
-            quizzes.add(MulDivQuiz())
-        else:
-            if random_bool():
-                quizzes.add(PlusQuiz())
-            else:
-                quizzes.add(MinusQuiz())
+    quizzes = []
+    while len(quizzes) < count:
+        quizzes.extend(produce_quizzes(count - len(quizzes), ratio_plus_minus))
 
     return np.char.array([f"{q}=" for q in quizzes]).reshape(row, col).tolist()
 
