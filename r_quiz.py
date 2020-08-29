@@ -130,13 +130,20 @@ if __name__ == "__main__":
     import os
     from reportlab.platypus import SimpleDocTemplate, Table
 
+    def positive_float(arg):
+        "Parses arg as a postive float"
+        flt = float(arg)
+        if flt <= 0:
+            raise argparse.ArgumentTypeError(f"{arg} is not postive")
+        return flt
+
     PARSER = argparse.ArgumentParser()
 
     PARSER.add_argument(
         "--ratio-plus-minus",
         help="ratio of +/- quizzes (default=0.4, i.e. 40%% of quizzes will be +/-)",
         default=0.4,
-        type=float,
+        type=positive_float,
     )
     PARSER.add_argument(
         "-P",
