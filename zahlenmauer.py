@@ -83,7 +83,7 @@ if __name__ == "__main__":
             " '-S 2 --symmetric' will produce [1, 2, 1]",
             action="store_true",
         )
-        args = parser.parse_args()
+        args, _ = parser.parse_known_args()
         if args.stop < 2:
             parser.error("stop must >= 2")
         return parse_range(args)

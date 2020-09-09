@@ -152,7 +152,7 @@ if __name__ == "__main__":
         "(default=r_quiz.pdf in the working directory)",
         default="r_quiz.pdf",
     )
-    ARGS = PARSER.parse_args()
+    ARGS, _ = PARSER.parse_known_args()
 
     SimpleDocTemplate(ARGS.path).build([Table(produce_matrix(ARGS.ratio_plus_minus))])
     print(f"Written to {os.path.abspath(ARGS.path)}")
