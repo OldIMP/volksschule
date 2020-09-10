@@ -1,7 +1,7 @@
 # pylint: disable=missing-docstring
 
 import numpy as np
-from r_quiz import PlusQuiz, MulQuiz, produce_matrix
+from r_quiz import PlusQuiz, MulQuiz, produce_matrix, COL, ROW
 
 
 def test_plus():
@@ -45,7 +45,7 @@ def test_mul():
 
 
 def test_produce_matrix():
-    count = 12 * 38
+    count = COL * ROW
     matrix = np.char.array(produce_matrix(0.1))
     plus_minus = matrix.count("+") + matrix.count("-")
 

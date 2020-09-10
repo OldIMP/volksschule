@@ -114,8 +114,8 @@ def produce_quizzes(count, ratio_plus_minus):
 def produce_matrix(ratio_plus_minus):
     "Produce a 2d matrix of quizzes"
 
-    col = 12
-    row = 38
+    col = 7
+    row = 27
     count = row * col
 
     quizzes = []
@@ -154,5 +154,12 @@ if __name__ == "__main__":
     )
     ARGS, _ = PARSER.parse_known_args()
 
-    SimpleDocTemplate(ARGS.path).build([Table(produce_matrix(ARGS.ratio_plus_minus))])
+    DATA = produce_matrix(ARGS.ratio_plus_minus)
+    STYLE = [
+        ("SIZE", (0, 0), (-1, -1), 16),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 20),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
+    ]
+
+    SimpleDocTemplate(ARGS.path).build([Table(DATA, style=STYLE)])
     print(f"Written to {os.path.abspath(ARGS.path)}")
