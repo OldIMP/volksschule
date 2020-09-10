@@ -11,6 +11,9 @@ import random
 from dataclasses import dataclass
 import numpy as np
 
+COL = 7
+ROW = 27
+
 
 def random_bool():
     """Generate a random boolean"""
@@ -114,21 +117,20 @@ def produce_quizzes(count, ratio_plus_minus):
 def produce_matrix(ratio_plus_minus):
     "Produce a 2d matrix of quizzes"
 
-    col = 7
-    row = 27
-    count = row * col
+    count = ROW * COL
 
     quizzes = []
     while len(quizzes) < count:
         quizzes.extend(produce_quizzes(count - len(quizzes), ratio_plus_minus))
 
-    return np.char.array([f"{q}=" for q in quizzes]).reshape(row, col).tolist()
+    return np.char.array([f"{q}=" for q in quizzes]).reshape(ROW, COL).tolist()
 
 
 if __name__ == "__main__":
     import argparse
     import os
     from reportlab.platypus import SimpleDocTemplate, Table
+    from reportlab.lib import colors
 
     def positive_float(arg):
         "Parses arg as a postive float"
@@ -160,6 +162,12 @@ if __name__ == "__main__":
         ("RIGHTPADDING", (0, 0), (-1, -1), 20),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
     ]
+
+    INTERVAL = 30 // COL
+    LINE = 0
+    while LINE < ROW:
+        LINE += INTERVAL
+        STYLE.append(("LINEABOVE", (0, LINE), (-1, LINE), 1, colors.black))
 
     SimpleDocTemplate(ARGS.path).build([Table(DATA, style=STYLE)])
     print(f"Written to {os.path.abspath(ARGS.path)}")
