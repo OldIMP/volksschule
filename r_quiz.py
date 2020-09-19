@@ -11,8 +11,10 @@ import random
 from dataclasses import dataclass
 import numpy as np
 
-COL = 7
+COL = 5
 ROW = 27
+
+PLUS_MINUS_MAX = 1000
 
 
 def random_bool():
@@ -51,7 +53,7 @@ class PlusQuiz(NoOrderQuiz):
     """A + quiz"""
 
     def __init__(self):
-        super().__init__(1, 100)
+        super().__init__(1, PLUS_MINUS_MAX)
 
     def __str__(self):
         return f"{self.left}+{self.right}"
@@ -62,7 +64,7 @@ class MinusQuiz(OrderQuiz):
     """A - quiz"""
 
     def __init__(self):
-        minuend = random.randrange(2, 100)
+        minuend = random.randrange(2, PLUS_MINUS_MAX)
         super().__init__(minuend, random.randrange(1, minuend))
 
     def __str__(self):
@@ -159,7 +161,7 @@ if __name__ == "__main__":
     DATA = produce_matrix(ARGS.ratio_plus_minus)
     STYLE = [
         ("SIZE", (0, 0), (-1, -1), 16),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 20),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 30),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
     ]
 
