@@ -107,13 +107,11 @@ class DivQuiz(OrderQuiz):
 
 
 def produce_quizzes(count, ratio_plus_minus):
-    """Produce a set of quizzes w/ max size of count
-    or smaller if ratio_plus_minus is reached earlier"""
+    """Produce a set of quizzes w/ size of count"""
 
     quizzes = set()
-    count_plus_minus = 0
 
-    while len(quizzes) < count and count_plus_minus < count * ratio_plus_minus:
+    while len(quizzes) < count:
         if random.random() > ratio_plus_minus:
             if random_bool():
                 quizzes.add(MulQuiz())
@@ -124,7 +122,6 @@ def produce_quizzes(count, ratio_plus_minus):
                 quizzes.add(PlusQuiz())
             else:
                 quizzes.add(MinusQuiz())
-            count_plus_minus += 1
 
     return quizzes
 
@@ -133,10 +130,7 @@ def produce_matrix(ratio_plus_minus):
     "Produce a 2d matrix of quizzes"
 
     count = ROW * COL
-
-    quizzes = []
-    while len(quizzes) < count:
-        quizzes.extend(produce_quizzes(count - len(quizzes), ratio_plus_minus))
+    quizzes = produce_quizzes(count, ratio_plus_minus)
 
     return np.char.array([f"{q}=" for q in quizzes]).reshape(ROW, COL).tolist()
 
