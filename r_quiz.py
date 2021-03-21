@@ -165,8 +165,10 @@ if __name__ == "__main__":
     PARSER.add_argument(
         "-P",
         "--path",
-        help="where the output will be saved, existing file will be overwritten "
-        "(default=r_quiz.pdf in the working directory)",
+        help=(
+            "where the output will be saved, existing file will be overwritten"
+            " (default=r_quiz.pdf in the working directory)"
+        ),
         default="r_quiz.pdf",
     )
     ARGS, _ = PARSER.parse_known_args()
