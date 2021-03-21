@@ -1,8 +1,8 @@
 """Rechen-Quiz
 
 Randomly generates a mix of math quizzes for the elementary school:
-- +/- quizzes between 1-100
-- Einmaleins: Multiply/division quizzes w/ product/divident up to 10
+- +/- quizzes
+- Multiply/division quizzes
 
 Output will be written to a pdf file defined by --path
 """
