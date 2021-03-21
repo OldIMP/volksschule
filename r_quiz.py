@@ -15,6 +15,7 @@ COL = 5
 ROW = 27
 
 PLUS_MINUS_MAX = 1000
+MUL_RESULT_MAX = 10000
 
 
 def random_bool():
@@ -25,9 +26,16 @@ def random_bool():
 class NoOrderQuiz:
     """Base class for quiz where order doesn't matter"""
 
-    def __init__(self, start, stop):
-        self.left = random.randrange(start, stop)
-        self.right = random.randrange(start, stop)
+    left: int
+    right: int
+
+    def __init__(self, one, the_other):
+        if random_bool():
+            self.left = one
+            self.right = the_other
+        else:
+            self.left = the_other
+            self.right = one
 
     def __eq__(self, other):
         if isinstance(other, type(self)):
@@ -53,7 +61,9 @@ class PlusQuiz(NoOrderQuiz):
     """A + quiz"""
 
     def __init__(self):
-        super().__init__(1, PLUS_MINUS_MAX)
+        super().__init__(
+            random.randrange(1, PLUS_MINUS_MAX), random.randrange(1, PLUS_MINUS_MAX)
+        )
 
     def __str__(self):
         return f"{self.left}+{self.right}"
@@ -76,7 +86,10 @@ class MulQuiz(NoOrderQuiz):
     """A multiply quiz"""
 
     def __init__(self):
-        super().__init__(2, 10)
+        one_digit_factor = random.randrange(2, 10)
+        super().__init__(
+            one_digit_factor, random.randrange(2, MUL_RESULT_MAX // one_digit_factor)
+        )
 
     def __str__(self):
         return f"{self.left}⋅{self.right}"
