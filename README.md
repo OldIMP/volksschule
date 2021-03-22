@@ -1,4 +1,8 @@
 # Volksschule
+[![Python application](https://github.com/OldIMP/volksschule/actions/workflows/python-app.yml/badge.svg)](https://github.com/OldIMP/volksschule/actions/workflows/python-app.yml)
+[![CodeQL](https://github.com/OldIMP/volksschule/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/OldIMP/volksschule/actions/workflows/codeql-analysis.yml)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Python scripts for elementary school exercises in Austria (Volksschule) also as programming exercises for myself :P
 
 ## Zahlenmauer (`zahlenmauer.py`)
