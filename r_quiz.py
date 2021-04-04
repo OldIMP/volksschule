@@ -11,10 +11,11 @@ import random
 from dataclasses import dataclass
 import numpy as np
 
-COL = 5
+BLANK_WIDTH = 50
+COL = 3
 ROW = 27
 
-PLUS_MINUS_MAX = 1000
+PLUS_MINUS_MAX = 100000
 MUL_RESULT_MAX = 10000
 
 
@@ -170,7 +171,7 @@ if __name__ == "__main__":
     DATA = produce_matrix(ARGS.ratio_plus_minus)
     STYLE = [
         ("SIZE", (0, 0), (-1, -1), 16),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 30),
+        ("RIGHTPADDING", (0, 0), (-1, -1), BLANK_WIDTH),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
     ]
 
