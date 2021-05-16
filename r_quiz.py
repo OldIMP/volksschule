@@ -101,10 +101,11 @@ class DivQuiz(OrderQuiz):
     """A division quiz"""
 
     def __init__(self):
-        super().__init__(random.randrange(2, 9), random.randrange(2, 9))
+        divisor = random.randrange(2, 9)
+        super().__init__(random.randrange(divisor, 1000), divisor)
 
     def __str__(self):
-        return f"{self.left*self.right}:{self.left}"
+        return f"{self.left}:{self.right}"
 
 
 def produce_quizzes(count, ratio_plus_minus):
