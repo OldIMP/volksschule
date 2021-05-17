@@ -11,11 +11,11 @@ import random
 from dataclasses import dataclass
 import numpy as np
 
-BLANK_WIDTH = 50
+BLANK_WIDTH = 55
 COL = 3
 ROW = 27
 
-PLUS_MINUS_MAX = 100_000
+PLUS_MINUS_MAX = 1_000_000
 MUL_RESULT_MAX = 10_000
 
 
@@ -87,9 +87,9 @@ class MulQuiz(NoOrderQuiz):
     """A multiply quiz"""
 
     def __init__(self):
-        one_digit_factor = random.randrange(2, 10)
+        smaller_factor = random.randrange(2, 100)
         super().__init__(
-            one_digit_factor, random.randrange(2, MUL_RESULT_MAX // one_digit_factor)
+            smaller_factor, random.randrange(2, MUL_RESULT_MAX // smaller_factor)
         )
 
     def __str__(self):
