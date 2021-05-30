@@ -1,7 +1,12 @@
-pyinstaller==3.6
-pytest-cov==2.10.1
-reportlab==3.5.26
-pandas==1.1
+# runtime
+reportlab>=3.5.26
+pandas>=1.1
+pyinstaller>=4.3
 
-# higher version will cause deprecated warning
-matplotlib==3.0.3
+# test
+pytest-cov>=2.10.1
+
+# dev
+black
+flake8
+pylint>=2.5

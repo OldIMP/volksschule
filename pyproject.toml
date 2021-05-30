@@ -1,2 +1,6 @@
 [tool.black]
 experimental-string-processing=true
+
+[tool.pylint.typecheck]
+# Enums
+generated-members=["layout", "LAYOUT", "Layout.*"]

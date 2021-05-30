@@ -1,53 +1,54 @@
 # pylint: disable=missing-docstring
 
+import pytest
 import numpy as np
-from r_quiz import PlusQuiz, MulQuiz, produce_matrix, COL, ROW
-
-
-def test_plus():
-    plus_1 = PlusQuiz()
-    plus_1.left = 1
-    plus_1.right = 2
-
-    plus_2 = PlusQuiz()
-    plus_2.left = 2
-    plus_2.right = 1
-
-    assert plus_1 == plus_2
-
-    quizzes = set()
-    quizzes.add(plus_1)
-    quizzes.add(plus_2)
-
-    assert len(quizzes) == 1
-
-
-def test_mul():
-    mul_1 = MulQuiz()
-    mul_1.left = 2
-    mul_1.right = 3
-
-    assert str(mul_1) == "2⋅3"
-
-    mul_2 = MulQuiz()
-    mul_2.left = 3
-    mul_2.right = 2
-
-    assert str(mul_2) == "3⋅2"
-
-    assert mul_1 == mul_2
-
-    quizzes = set()
-    quizzes.add(mul_1)
-    quizzes.add(mul_2)
-
-    assert len(quizzes) == 1
+from r_quiz import PlusQuiz, MinusQuiz, MulQuiz, DivQuiz, produce_matrix, Layout
 
 
 def test_produce_matrix():
-    count = COL * ROW
-    matrix = np.char.array(produce_matrix(0.1))
+    count = Layout.SIMPLE.col * Layout.SIMPLE.row
+    matrix = np.char.array(produce_matrix(0.1, False))
     plus_minus = matrix.count("+") + matrix.count("-")
 
     assert plus_minus.sum() < count / 2
     assert matrix.size == matrix.count("=").sum() == count
+
+
+@pytest.mark.parametrize("quiz", [PlusQuiz(), MinusQuiz(), MulQuiz(), DivQuiz()])
+def test_str_simple(quiz):
+    simple_str = quiz.str()
+
+    assert "\n" not in simple_str
+    assert simple_str.endswith("=")
+
+
+def test_str_simple_mul():
+    assert "⋅" in MulQuiz().str()
+
+
+@pytest.mark.parametrize("quiz, operator", [(PlusQuiz(), "+"), (MinusQuiz(), "-")])
+def test_str_schriftlich_plus_minus(quiz, operator):
+    schriftlich = quiz.str(True)
+    lines = schriftlich.splitlines()
+    expected_len = quiz.max_len + 1
+
+    assert len(lines) == 3
+    assert all(len(line) == expected_len for line in lines)
+
+    assert schriftlich.startswith(" ")
+    assert lines[1].startswith(operator)
+    assert lines[2] == "-" * expected_len
+
+
+def test_str_schriftlich_mul():
+    lines = MulQuiz().str(True).splitlines()
+
+    assert len(lines) == 2
+    assert (line_len := len(lines[0])) == len(lines[1])
+
+    assert lines[1] == "-" * line_len
+
+
+def test_str_div_quiz_eq():
+    quiz = DivQuiz()
+    assert quiz.str() == quiz.str(False) == quiz.str(True)
