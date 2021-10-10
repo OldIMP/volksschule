@@ -15,6 +15,7 @@ import numpy as np
 
 PLUS_MINUS_MAX = 1_000_000
 MUL_RESULT_MAX = 10_000
+QUIZ_PER_GROUP = 15
 
 
 def random_bool():
@@ -226,7 +227,7 @@ if __name__ == "__main__":
     ]
 
     LAYOUT = Layout.SCHRIFTLICH if ARGS.schriftlich else Layout.SIMPLE
-    INTERVAL = 30 // LAYOUT.col
+    INTERVAL = QUIZ_PER_GROUP // LAYOUT.col
     LINE = 0
     while LINE < LAYOUT.row:
         LINE += INTERVAL
