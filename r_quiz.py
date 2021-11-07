@@ -15,6 +15,7 @@ import numpy as np
 
 PLUS_MINUS_MAX = 1_000_000
 MUL_RESULT_MAX = 10_000
+DIVIDEND_MAX = 1000
 QUIZ_PER_GROUP = 15
 
 
@@ -130,7 +131,7 @@ class DivQuiz(OrderQuiz):
 
     def __init__(self):
         divisor = random.randrange(2, 9)
-        super().__init__(random.randrange(divisor, 1000), divisor)
+        super().__init__(random.randrange(divisor, DIVIDEND_MAX), divisor)
 
     def str(self, _=False) -> str:
         return f"{self.left}:{self.right}="
