@@ -19,7 +19,7 @@ DIVIDEND_MAX = 1000
 QUIZ_PER_GROUP = 15
 
 
-def random_bool():
+def random_bool() -> bool:
     """Generate a random boolean"""
     return bool(random.getrandbits(1))
 
@@ -148,7 +148,7 @@ class Layout(Enum):
         self.row = row
 
 
-def produce_quizzes(count, ratio_plus_minus):
+def produce_quizzes(count: int, ratio_plus_minus: float) -> set[OrderQuiz]:
     """Produce a set of quizzes w/ size of count"""
 
     quizzes = set()
@@ -168,7 +168,7 @@ def produce_quizzes(count, ratio_plus_minus):
     return quizzes
 
 
-def produce_matrix(ratio_plus_minus, schriftlich) -> list[str]:
+def produce_matrix(ratio_plus_minus: float, schriftlich: bool) -> list[str]:
     "Produce a 2d matrix of quizzes"
 
     layout = Layout.SCHRIFTLICH if schriftlich else Layout.SIMPLE
@@ -185,7 +185,7 @@ if __name__ == "__main__":
     from reportlab.platypus import SimpleDocTemplate, Table
     from reportlab.lib import colors
 
-    def positive_float(arg):
+    def positive_float(arg: str) -> float:
         "Parses arg as a postive float"
         flt = float(arg)
         if flt <= 0:
