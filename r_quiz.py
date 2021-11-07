@@ -11,6 +11,9 @@ import abc
 import random
 from dataclasses import dataclass
 from enum import Enum
+
+# Necessary for outdated pyinstaller
+from typing import List, Set
 import numpy as np
 
 PLUS_MINUS_MAX = 1_000_000
@@ -148,7 +151,7 @@ class Layout(Enum):
         self.row = row
 
 
-def produce_quizzes(count: int, ratio_plus_minus: float) -> set[OrderQuiz]:
+def produce_quizzes(count: int, ratio_plus_minus: float) -> Set[OrderQuiz]:
     """Produce a set of quizzes w/ size of count"""
 
     quizzes = set()
@@ -168,7 +171,7 @@ def produce_quizzes(count: int, ratio_plus_minus: float) -> set[OrderQuiz]:
     return quizzes
 
 
-def produce_matrix(ratio_plus_minus: float, schriftlich: bool) -> list[str]:
+def produce_matrix(ratio_plus_minus: float, schriftlich: bool) -> List[str]:
     "Produce a 2d matrix of quizzes"
 
     layout = Layout.SCHRIFTLICH if schriftlich else Layout.SIMPLE
